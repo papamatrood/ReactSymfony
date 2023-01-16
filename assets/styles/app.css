@@ -1,0 +1,28 @@
+@import url('./bootstrap.min.css');
+
+ul.navbar-nav>li>a {
+    font-size: 1.2rem;
+    color: rgba(236, 233, 233, 0.977)
+}
+
+ul.navbar-nav>li>a:hover,
+ul.navbar-nav>li>a:focus {
+    color: #fff;
+}
+
+form.add-rapport div {
+    margin-bottom: 0 !important;
+}
+
+legend {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 0px;
+    border-bottom: none;
+    margin-top: -23px;
+    margin-bottom: 15px;
+    background-color: white;
+    color: black;
+}
