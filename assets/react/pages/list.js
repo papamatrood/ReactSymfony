@@ -4,6 +4,7 @@ import FormRapport from "../form/formRapport";
 import Rapport from "../component/rapport";
 import Graph from "../component/graph";
 import Pagination from "../component/pagination";
+import RapportServices from "../services/rapportServices";
 
 
 
@@ -18,9 +19,7 @@ const List = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/rapports')
-            .then(response => response.json())
-            .then(data => setRapport(data));
+        RapportServices.getRapports().then(data => setRapport(data));
     }, []);
 
     //console.log(rapports);

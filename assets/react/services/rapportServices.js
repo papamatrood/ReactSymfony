@@ -1,10 +1,7 @@
 export default class RapportServices {
 
     static getRapports() {
-        return fetch(`http://localhost:8000/api/rapports`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        })
+        return fetch(`http://localhost:8000/api/rapports`)
             .then(response => response.json())
             .catch(error => this.handleError(error));
     }

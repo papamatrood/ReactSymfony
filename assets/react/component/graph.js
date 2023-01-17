@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Chart from "chart.js/auto";
+import { Pie } from "react-chartjs-2";
 
 const Graph = () => {
     const [dataChart, setDataChart] = useState({
@@ -23,22 +24,22 @@ const Graph = () => {
             hoverOffset: 6
         }]
     });
-    const ctx = 'myChart';
 
-    const config = {
-        type: 'pie',
-        data: dataChart,
-    };
 
-    let chartStatus = Chart.getChart("myChart");
-    if (chartStatus != undefined) {
-        chartStatus.destroy();
-    }
-    const myChart = new Chart(ctx, config);
     return (
         <fieldset className="border p-2">
             <legend>Graphe du rapport d'activité</legend>
-            <canvas id="myChart"></canvas>
+            <Pie
+                data={dataChart}
+                options={{
+                    plugins: {
+                        title: {
+                            display: false,
+                            text: "Users Gained between 2016-2020"
+                        }
+                    }
+                }}
+            />
         </fieldset>
     )
 }
