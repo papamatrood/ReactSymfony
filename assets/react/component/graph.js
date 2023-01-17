@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Chart from "chart.js/auto";
 
 const Graph = () => {
-    const ctx = 'myChart';
-    const dataChart = {
+    const [dataChart, setDataChart] = useState({
         labels: [
             'Installation',
             'Inter-Qualité',
@@ -23,12 +22,15 @@ const Graph = () => {
             ],
             hoverOffset: 6
         }]
-    };
+    });
+    const ctx = 'myChart';
+
     const config = {
         type: 'pie',
         data: dataChart,
     };
-    let chartStatus = Chart.getChart("myChart"); 
+
+    let chartStatus = Chart.getChart("myChart");
     if (chartStatus != undefined) {
         chartStatus.destroy();
     }

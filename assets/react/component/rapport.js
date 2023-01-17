@@ -11,7 +11,7 @@ const Rapport = ({ rapport }) => {
 
     const handleDelete = () => {
         if (confirm("êtes vous sûr de cette action ?")) {
-            RapportServices.deleteRapport(rapport).then(() => navigate('/list'));
+            RapportServices.deleteRapport(rapport);
         }
     }
 

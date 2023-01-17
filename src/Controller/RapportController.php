@@ -33,12 +33,12 @@ class RapportController extends AbstractController
     }
 
     #[Route('/api/rapport', name: "createRapport", methods: ['POST'])]
-    public function createRapport(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
+    public function createRapport(Request $request, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
     {
         $rapport = $serializer->deserialize($request->getContent(), Rapport::class, 'json');
 
         // Récupération de l'ensemble des données envoyées sous forme de tableau
-        $content = $request->toArray();
+        //$content = $request->toArray();
 
         // Récupération de l'idAuthor. S'il n'est pas défini, alors on met -1 par défaut.
         // $idAuthor = $content['idAuthor'] ?? -1;
@@ -50,15 +50,16 @@ class RapportController extends AbstractController
         $em->persist($rapport);
         $em->flush();
 
-        $jsonRapport = $serializer->serialize($rapport, 'json');
+        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
 
-        $location = $urlGenerator->generate('rapports', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        // $jsonRapport = $serializer->serialize($rapport, 'json');
 
-        return new JsonResponse($jsonRapport, Response::HTTP_CREATED, ["Location" => $location], true);
+        // $location = $urlGenerator->generate('rapports', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        // return new JsonResponse($jsonRapport, Response::HTTP_CREATED, ["Location" => $location], true);
     }
 
     #[Route('/api/rapport/{id}', name: "updateRapport", methods: ['PUT'])]
-
     public function updateRapport(Request $request, SerializerInterface $serializer, Rapport $currentRapport, EntityManagerInterface $em): JsonResponse
     {
         $updatedRapport = $serializer->deserialize(

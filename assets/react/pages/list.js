@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import FormRapport from "../component/formRapport";
+import FormRapport from "../form/formRapport";
 import Rapport from "../component/rapport";
 import Graph from "../component/graph";
 import Pagination from "../component/pagination";
@@ -11,8 +11,6 @@ const List = () => {
     const [rapports, setRapport] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [perPage, setPerPage] = useState(7);
-
-
 
     const lastIndex = currentPage * perPage;
     const firstIndex = lastIndex - perPage;
@@ -25,13 +23,13 @@ const List = () => {
             .then(data => setRapport(data));
     }, []);
 
-    console.log(rapports);
-    const location = useLocation();
+    //console.log(rapports);
+    let location = useLocation();
     let navigate = useNavigate();
     if (location.pathname === "/list") {
         navigate('/');
     }
-    
+
     return (
 
         <div className="container-fluid">

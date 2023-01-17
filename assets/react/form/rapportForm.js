@@ -31,13 +31,13 @@ function RapportForm({ rapport }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(form);
         rapport.installation = form.installation.value;
         rapport.interqualite = form.interqualite.value;
         rapport.interdepannage = form.interdepannage.value;
         rapport.visite = form.visite.value;
         rapport.recuperation = form.recuperation.value;
         rapport.autre = form.autre.value;
+        console.log(rapport);
         RapportServices.updateRapport(rapport).then(() => navigate('/list'));
     }
 
