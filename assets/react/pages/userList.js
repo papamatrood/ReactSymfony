@@ -25,9 +25,8 @@ const UserList = () => {
     console.log(users);
     let location = useLocation();
     let navigate = useNavigate();
-    if (location.pathname === "/list") {
-        navigate('/');
-        document.location.reload();
+    if (location.pathname === "/") {
+        navigate('/users');
     }
 
     return (

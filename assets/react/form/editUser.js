@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { userOptions } from "../helpers/userHelpers";
 import UserServices from "../services/userServices";
 
 function EditUser({ user }) {
@@ -80,11 +81,11 @@ function EditUser({ user }) {
                         className="form-select form-select-sm"
                         id="roles"
                         name="roles"
-                        onChange={handleChange} > 
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        </select>
+                        onChange={handleChange} >
+                        {userOptions.map((option) => (
+                            <option value={option.value}>{option.label}</option>
+                        ))}
+                    </select>
                 </div>
             </div>
             <div className="row mb-3">

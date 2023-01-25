@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -33,30 +33,18 @@ class UserController extends AbstractController
     }
 
     #[Route('/api/user', name: "createUser", methods: ['POST'])]
-    public function createUser(Request $request, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
+    public function createUser(Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): JsonResponse
     {
         $user = $serializer->deserialize($request->getContent(), User::class, 'json');
+        $content = $request->toArray();
+        $password = $content['password'] ?? -1;
 
-        // Récupération de l'ensemble des données envoyées sous forme de tableau
-        //$content = $request->toArray();
+        $user->setPassword($userPasswordHasher->hashPassword($user, $password));
 
-        // Récupération de l'idAuthor. S'il n'est pas défini, alors on met -1 par défaut.
-        // $idAuthor = $content['idAuthor'] ?? -1;
-
-        // On cherche l'auteur qui correspond et on l'assigne au livre.
-        // Si "find" ne trouve pas l'auteur, alors null sera retourné.
-        // $book->setAuthor($authorRepository->find($idAuthor));
-
-        $em->persist($user);
-        $em->flush();
+        $entityManager->persist($user);
+        $entityManager->flush();
 
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
-
-        // $jsonUser = $serializer->serialize($user, 'json');
-
-        // $location = $urlGenerator->generate('users', [], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        // return new JsonResponse($jsonUser, Response::HTTP_CREATED, ["Location" => $location], true);
     }
 
     #[Route('/api/user/{id}', name: "updateUser", methods: ['PUT'])]
