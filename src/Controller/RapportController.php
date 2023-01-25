@@ -27,7 +27,7 @@ class RapportController extends AbstractController
     #[Route('/api/rapports', name: 'rapports', methods: ['GET'])]
     public function getRapportList(RapportRepository $rapportRepository, SerializerInterface $serializer): JsonResponse
     {
-        $rapportList = $rapportRepository->findAll();
+        $rapportList = array_reverse($rapportRepository->findAll());
         $jsonRapportList = $serializer->serialize($rapportList, 'json');
         return new JsonResponse($jsonRapportList, Response::HTTP_OK, [], true);
     }

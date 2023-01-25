@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import FormRapport from "../form/formRapport";
-import Rapport from "../component/rapport";
+import AddUser from "../form/addUser";
+import User from "../component/user";
 import Graph from "../component/graph";
 import Pagination from "../component/pagination";
-import RapportServices from "../services/rapportServices";
+import UserServices from "../services/userServices";
 
 
 
-const List = () => {
-    const [rapports, setRapport] = useState([]);
+const UserList = () => {
+    const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [perPage, setPerPage] = useState(7);
 
     const lastIndex = currentPage * perPage;
     const firstIndex = lastIndex - perPage;
-    const currentRapports = rapports.slice(firstIndex, lastIndex);
+    const currentUsers = users.slice(firstIndex, lastIndex);
 
 
     useEffect(() => {
-        RapportServices.getRapports().then(data => setRapport(data));
+        UserServices.getUsers().then(data => setUsers(data));
     }, []);
 
-    //console.log(rapports);
+    console.log(users);
     let location = useLocation();
     let navigate = useNavigate();
     if (location.pathname === "/list") {
@@ -41,23 +41,20 @@ const List = () => {
                 <div className="col-md-8">
                     <div className="table-responsive p-3">
                         <fieldset className="border p-2">
-                            <legend>Les rapports d'activités</legend>
+                            <legend>Les users d'activités</legend>
                             <table className="table table-sm table-bordered table-striped text-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th width="13%">Date de création</th>
-                                        <th width="10%">Installations</th>
-                                        <th width="10%">Inter-Qualités</th>
-                                        <th width="12%">Inter-Dépannages</th>
-                                        <th width="10%">Visites</th>
-                                        <th width="10%">Récuperations</th>
-                                        <th width="18%">Autres</th>
+                                        <th width="10%">Prénom</th>
+                                        <th width="10%">Nom</th>
+                                        <th width="12%">Émail</th>
+                                        <th width="10%">Rôle</th>
                                         <th width="15%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {rapports ? (
-                                        currentRapports.map((rapport) => <Rapport key={rapport.id} rapport={rapport} />)
+                                    {users ? (
+                                        currentUsers.map((user) => <User key={user.id} user={user} />)
                                     ) : (
                                         <tr>
                                             <td colspan="8">Aucun enregistrement trouvé</td>
@@ -66,12 +63,12 @@ const List = () => {
                                 </tbody>
                             </table>
                         </fieldset>
-                        {rapports && <Pagination
-                            totalRapports={rapports.length}
+                        {users && <Pagination
+                            totalUsers={users.length}
                             perPage={perPage}
                             setCurrentPage={setCurrentPage}
                             currentPage={currentPage} />}
-                        <FormRapport />
+                        <AddUser />
                     </div>
                 </div>
             </div>
@@ -79,4 +76,4 @@ const List = () => {
     )
 }
 
-export default List;
+export default UserList;

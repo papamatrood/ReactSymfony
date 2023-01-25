@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import List from "./pages/list";
+import UserList from "./pages/userList";
 
 const rootID = document.getElementById('root');
 const root = createRoot(rootID);
@@ -30,13 +31,8 @@ root.render(
                                 Utilisateur
                             </Link>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><Link className="dropdown-item"
-                                    to="">Profile</Link></li>
-                                
-                                <li>
-                                    <hr className="dropdown-divider" />
-                                </li>
-                                <Link className="dropdown-item" to="">Utilisateur</Link>
+                                <li><Link className="dropdown-item" to="/users">Utilisateurs</Link></li>
+                                <li><Link className="dropdown-item" to="">Profile</Link></li>
                                 
                             </ul>
                         </li>
@@ -52,6 +48,7 @@ root.render(
         <Routes>
             <Route path="/" element={<List />} />
             <Route path="/list" element={<List />} />
+            <Route path="/users" element={<UserList />} />
         </Routes>
     </BrowserRouter>
 );

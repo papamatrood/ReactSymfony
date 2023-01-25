@@ -1,36 +1,34 @@
 import React from "react";
-import dateHelper from "../helpers/helpers";
-import RapportServices from "../services/rapportServices";
+import UserServices from "../services/userServices";
 import { useNavigate } from "react-router-dom";
-import Modal from "./modal";
+import { RolesTable } from "../helpers/userHelpers";
+import UserModal from "./userModal";
 
-const Rapport = ({ rapport }) => {
+const User = ({ user }) => {
 
-    let myDate = dateHelper(rapport.createdAt);
     let navigate = useNavigate();
 
     const handleDelete = () => {
         if (confirm("êtes vous sûr de cette action ?")) {
-            RapportServices.deleteRapport(rapport).then(() => navigate('/list'));
+            UserServices.deleteUser(user).then(() => navigate('/list'));
         }
     }
+    
+    console.log(RolesTable[user.roles]);
 
     return (
         <tr>
-            <td>{myDate}</td>
-            <td>{rapport.installation}</td>
-            <td>{rapport.interqualite}</td>
-            <td>{rapport.interdepannage}</td>
-            <td>{rapport.visite}</td>
-            <td>{rapport.recuperation}</td>
-            <td>{rapport.autre}</td>
+            <td>{user.firstname}</td>
+            <td>{user.lastname}</td>
+            <td>{user.email}</td>
+            <td>{RolesTable[user.roles]}</td>
             <td>
                 <div className="btn-group" role="group">
                     {/* <a
                         className="btn btn-sm btn-primary d-inline"
                         href=""
                     >Modifier</a> */}
-                    <Modal rapport={rapport} />
+                    { <UserModal user={user} /> }
                     <a className="btn btn-sm btn-danger d-inline" onClick={handleDelete}>Supprimer</a>
                 </div>
 
@@ -40,4 +38,4 @@ const Rapport = ({ rapport }) => {
     )
 }
 
-export default Rapport;
+export default User;
