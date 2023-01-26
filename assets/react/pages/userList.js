@@ -21,8 +21,7 @@ const UserList = () => {
     useEffect(() => {
         UserServices.getUsers().then(data => setUsers(data));
     }, []);
-
-    console.log(users);
+    
     let location = useLocation();
     let navigate = useNavigate();
     if (location.pathname === "/") {

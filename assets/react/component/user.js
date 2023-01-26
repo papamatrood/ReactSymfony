@@ -14,7 +14,6 @@ const User = ({ user }) => {
         }
     }
     
-    console.log(RolesTable[user.roles]);
 
     return (
         <tr>

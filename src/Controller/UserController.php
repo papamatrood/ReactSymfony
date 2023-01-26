@@ -38,8 +38,10 @@ class UserController extends AbstractController
         $user = $serializer->deserialize($request->getContent(), User::class, 'json');
         $content = $request->toArray();
         $password = $content['password'] ?? -1;
+        $role = $content['role'] === 'ROLE_ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER';
 
         $user->setPassword($userPasswordHasher->hashPassword($user, $password));
+        $user->setRole($role);
 
         $entityManager->persist($user);
         $entityManager->flush();
@@ -48,19 +50,23 @@ class UserController extends AbstractController
     }
 
     #[Route('/api/user/{id}', name: "updateUser", methods: ['PUT'])]
-    public function updateUser(Request $request, SerializerInterface $serializer, User $currentUser, EntityManagerInterface $em): JsonResponse
+    public function updateUser(Request $request, SerializerInterface $serializer, User $currentUser, UserRepository $userRepo, EntityManagerInterface $em): JsonResponse
     {
-        $updatedUser = $serializer->deserialize(
-            $request->getContent(),
-            User::class,
-            'json',
-            [AbstractNormalizer::OBJECT_TO_POPULATE => $currentUser]
-        );
-        $content = $request->toArray();
-        // $idAuthor = $content['idAuthor'] ?? -1;
-        // $updatedBook->setAuthor($authorRepository->find($idAuthor));
+        $updatedUser = $serializer->deserialize($request->getContent(), User::class, 'json');
 
-        $em->persist($updatedUser);
+        $idUser = $content['id'] ?? -1;
+        $firstname = $content['firstname'] ?? -1;
+        $lastname = $content['lastname'] ?? -1;
+
+        /**
+         * @var User
+         */
+        $user = $userRepo->find($idUser);
+
+        $user->setFirstname($firstname);
+        $user->setLastname($lastname);
+
+        $em->persist($user);
         $em->flush();
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }

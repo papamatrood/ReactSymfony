@@ -5,14 +5,15 @@ import UserServices from "../services/userServices";
 
 function EditUser({ user }) {
     const [form, setForm] = useState({
+        id: { value: user.id, isValid: true },
         firstname: { value: user.firstname, isValid: true },
         lastname: { value: user.lastname, isValid: true },
-        email: { value: user.email, isValid: true },
-        roles: { value: user.roles, isValid: true },
-        password: { value: '', isValid: true },
-        passwordRepeated: { value: '', isValid: true }
+        // email: { value: user.email, isValid: true },
+        // roles: { value: user.roles, isValid: true }
 
     });
+
+    const [alert, setAlert] = useState(false);
 
     let navigate = useNavigate();
 
@@ -20,27 +21,28 @@ function EditUser({ user }) {
     const handleChange = (event) => {
         const newField = event.target.name;
         const newValue = event.target.value;
-
         const newForm = { [newField]: { value: newValue } };
-
         setForm({ ...form, ...newForm });
-
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        user.firstname = form.firstname.value;
-        user.lastname = form.lastname.value;
-        user.email = form.email.value;
-        user.roles = form.roles.value;
-        user.password = form.password.value;
-        user.passwordRepeated = form.passwordRepeated.value;
-        console.log(user);
-        UserServices.updateUser(user).then(() => navigate('/list'));
+        let editUser = 'Avant'
+            // user.email = form.email.value;
+            // user.role = form.roles.value;
+            editUser = {
+                id: form.id.value,
+                firstname: form.firstname.value,
+                lastname: form.lastname.value
+            }
+            console.log(editUser);
+            UserServices.updateUser(editUser).then(() => navigate('/users'));
+            setAlert(false);
     }
 
 
     return <form onSubmit={handleSubmit}>
+        {alert && <div className="alert alert-warning">Les mots de passe ne sont pas les mêmes !</div>}
         <div className="modal-body">
             <div className="row mb-3">
                 <div className="col">
@@ -64,7 +66,7 @@ function EditUser({ user }) {
                         onChange={handleChange} />
                 </div>
             </div>
-            <div className="row mb-3">
+            {/* <div className="row mb-3">
                 <div className="col">
                     <label for="email" className="form-label">Email:</label>
                     <input
@@ -81,6 +83,7 @@ function EditUser({ user }) {
                         className="form-select form-select-sm"
                         id="roles"
                         name="roles"
+                        value={form.roles.value}
                         onChange={handleChange} >
                         {userOptions.map((option) => (
                             <option value={option.value}>{option.label}</option>
@@ -109,7 +112,7 @@ function EditUser({ user }) {
                         value={form.passwordRepeated.value}
                         onChange={handleChange} />
                 </div>
-            </div>
+            </div>  */}
         </div>
         <div className="modal-footer">
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

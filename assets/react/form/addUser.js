@@ -34,9 +34,10 @@ const AddUser = () => {
                 firstname: form.firstname.value,
                 lastname: form.lastname.value,
                 email: form.email.value,
-                roles: form.roles.value,
+                role: form.roles.value,
                 password: form.password.value
             }
+            console.log(user);
             UserServices.addUser(user).then(() => navigate('/'));
             setAlert(false);
             setForm({
