@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -44,6 +44,35 @@ class UserController extends AbstractController
         $user->setRole($role);
 
         $entityManager->persist($user);
+        $entityManager->flush();
+
+        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
+    }
+
+    #[Route('/api/edit_user', name: "editUser", methods: ['POST'])]
+    public function editUser(Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $userPasswordHasher, UserRepository $userRepo, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $user = $serializer->deserialize($request->getContent(), User::class, 'json');
+        $content = $request->toArray();
+        $id = $content['id'] ?? -1;
+        $firstname = $content['firstname'] ?? -1;
+        $lastname = $content['lastname'] ?? -1;
+        $email = $content['email'] ?? -1;
+        $password = $content['password'] ?? -1;
+        $role = $content['role'] === 'ROLE_ADMIN' ? 'ROLE_ADMIN' : 'ROLE_USER';
+
+        /**
+         * @var User
+         */
+        $editUser = $userRepo->find($id);
+
+        $editUser->setFirstname($firstname);
+        $editUser->setLastname($lastname);
+        $editUser->setEmail($email);
+        $editUser->setPassword($userPasswordHasher->hashPassword($user, $password));
+        $editUser->setRole($role);
+
+        $entityManager->persist($editUser);
         $entityManager->flush();
 
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
@@ -88,5 +117,19 @@ class UserController extends AbstractController
             return new JsonResponse($jsonUser, Response::HTTP_OK, [], true);
         }
         return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+    }
+    #[Route(path: '/api/login/{id}', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 }

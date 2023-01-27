@@ -8,8 +8,10 @@ function EditUser({ user }) {
         id: { value: user.id, isValid: true },
         firstname: { value: user.firstname, isValid: true },
         lastname: { value: user.lastname, isValid: true },
-        // email: { value: user.email, isValid: true },
-        // roles: { value: user.roles, isValid: true }
+        email: { value: user.email, isValid: true },
+        roles: { value: user.roles, isValid: true },
+        password: { value: '', isValid: true },
+        passwordRepeated: { value: '', isValid: true }
 
     });
 
@@ -28,16 +30,22 @@ function EditUser({ user }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         let editUser = 'Avant'
-            // user.email = form.email.value;
-            // user.role = form.roles.value;
+        if (form.passwordRepeated.value === form.password.value) {
             editUser = {
                 id: form.id.value,
                 firstname: form.firstname.value,
-                lastname: form.lastname.value
+                lastname: form.lastname.value,
+                email: form.email.value,
+                role: form.roles.value,
+                password: form.password.value
             }
             console.log(editUser);
-            UserServices.updateUser(editUser).then(() => navigate('/users'));
+            UserServices.editUser(editUser).then(() => navigate('/users'));
             setAlert(false);
+        } else {
+            setAlert(true);
+            editUser = 'Pas de contenu !'
+        }
     }
 
 
@@ -66,7 +74,7 @@ function EditUser({ user }) {
                         onChange={handleChange} />
                 </div>
             </div>
-            {/* <div className="row mb-3">
+            <div className="row mb-3">
                 <div className="col">
                     <label for="email" className="form-label">Email:</label>
                     <input
@@ -112,7 +120,7 @@ function EditUser({ user }) {
                         value={form.passwordRepeated.value}
                         onChange={handleChange} />
                 </div>
-            </div>  */}
+            </div>
         </div>
         <div className="modal-footer">
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

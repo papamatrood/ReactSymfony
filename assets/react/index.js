@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import List from "./pages/list";
+import Login from "./pages/login";
 import UserList from "./pages/userList";
 
 const rootID = document.getElementById('root');
@@ -22,9 +23,8 @@ root.render(
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/list">Rapport d'activité</Link>
+                            <Link className="nav-link" to="/">Rapport d'activité</Link>
                         </li>
-                        
                         <li className="nav-item dropdown">
                             <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -32,11 +32,13 @@ root.render(
                             </Link>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><Link className="dropdown-item" to="/users">Utilisateurs</Link></li>
-                                <li><Link className="dropdown-item" to="">Profile</Link></li>
+                                {/* <li><Link className="dropdown-item" to="">Profile</Link></li> */}
                                 
                             </ul>
                         </li>
-                        
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/login">Se Connecter</Link>
+                        </li>
                     </ul>
                 </div>
                 {/* <div className="d-flex align-items-center">
@@ -49,6 +51,7 @@ root.render(
             <Route path="/" element={<List />} />
             <Route path="/list" element={<List />} />
             <Route path="/users" element={<UserList />} />
+            <Route path="/login" element={<Login />} />
         </Routes>
     </BrowserRouter>
 );
