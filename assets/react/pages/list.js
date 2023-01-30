@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import FormRapport from "../form/formRapport";
 import Rapport from "../component/rapport";
 import Graph from "../component/graph";
 import Pagination from "../component/pagination";
 import RapportServices from "../services/rapportServices";
+import { useGetRapports } from "../hooks/rapportHooks";
 
 
 
 const List = () => {
-    const [rapports, setRapport] = useState([]);
+    const { rapports, load, loading, setRapports } = useGetRapports('http://localhost:8000/api/rapports');
     const [currentPage, setCurrentPage] = useState(1);
     const [perPage, setPerPage] = useState(7);
 
@@ -17,10 +18,14 @@ const List = () => {
     const firstIndex = lastIndex - perPage;
     const currentRapports = rapports.slice(firstIndex, lastIndex);
 
+    const addRapport = useCallback(rapport => {
+        setRapports(rapports => [rapport, ...rapports]);
+    });
 
     useEffect(() => {
-        RapportServices.getRapports().then(data => setRapport(data));
+        load()
     }, []);
+
 
     //console.log(rapports);
     let location = useLocation();
@@ -39,6 +44,7 @@ const List = () => {
                     <Graph />
                 </div>
                 <div className="col-md-8">
+                    {loading && 'Chargement...'}
                     <div className="table-responsive p-3">
                         <fieldset className="border p-2">
                             <legend>Les rapports d'activités</legend>
@@ -71,7 +77,7 @@ const List = () => {
                             perPage={perPage}
                             setCurrentPage={setCurrentPage}
                             currentPage={currentPage} />}
-                        <FormRapport />
+                        <FormRapport onRapport={addRapport} />
                     </div>
                 </div>
             </div>

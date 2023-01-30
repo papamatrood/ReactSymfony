@@ -6,14 +6,17 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RapportRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ORM\Entity(repositoryClass: RapportRepository::class)]
-#[ApiResource()]
+#[ApiResource]
 class Rapport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    
     private ?int $id = null;
 
     #[ORM\Column]

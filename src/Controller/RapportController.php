@@ -32,7 +32,7 @@ class RapportController extends AbstractController
         return new JsonResponse($jsonRapportList, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/rapport', name: "createRapport", methods: ['POST'])]
+    #[Route('/api/addRapport', name: "createRapport", methods: ['POST'])]
     public function createRapport(Request $request, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
     {
         $rapport = $serializer->deserialize($request->getContent(), Rapport::class, 'json');

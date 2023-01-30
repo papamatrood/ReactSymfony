@@ -7,7 +7,7 @@ export default class RapportServices {
     }
 
     static addRapport(rapport) {
-        return fetch(`http://localhost:8000/api/rapport`, {
+        return fetch(`http://localhost:8000/api/addRapport`, {
             method: 'POST',
             body: JSON.stringify(rapport),
             headers: { 'Content-Type': 'application/json' }
